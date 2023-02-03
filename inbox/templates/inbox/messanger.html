@@ -12,10 +12,12 @@
         <div class="messenger-left-side">
             <div class="messenger-header">
                 <div class="messenger-profile-name">
+                    {% if request.user.is_authenticated %}
                     <a href="{% url 'profile' profile.id %}">
                         <span><strong>{{request.user.username}}</strong></span>
                        
                     </a>
+                    {% endif %}
                 </div>
                 <div class="messenger-icon">
                     <a href="#">

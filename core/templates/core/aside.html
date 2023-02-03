@@ -1,13 +1,13 @@
 <aside>
     <div class="sidebar">
         <div class="profile">
-               
+                {% if request.user.is_authenticated %}
                 <img src="{{profile.avatar.url}}">
                 <div>
                 <a href="{% url 'profile' request.user.id %}"><h1>{{profile.email}}</h1></a>
                 <h2>{{profile.name}}</h2> 
                 </div>
-           
+                {% endif %}
         </div>
         <div class="suggestions">
                 <p>Sugerencias para vos</p>
