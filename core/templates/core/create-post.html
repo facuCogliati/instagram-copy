@@ -1,0 +1,79 @@
+
+<!----------------------- CREACION DE POSTEOS -->
+<div class="creation-container" style="display: none;">
+    <div class="drop-post-creation">
+            <form class="form" action="{% url 'createPost' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <div>
+                    <label>Subir una publicacion</label>
+                    {{form.imagen}}
+                </div>    
+                <div>
+                  <label for="room_description">Descripcion</label>
+                  {{form.description}}
+                </div>
+                <label>Etiqueta a tus amigos</label>
+                <select name="tagged" multiple>
+                    {% for x in followers %}
+                    <option value="{{x.id}}">{{x}}</option>
+                    {% endfor %}
+                </select>
+                <div class="form__action">
+                  <div class="unFollow-btn" onclick="dropMenuCreation('cerrar')">Cancelar</div>
+                  <button class="btn-log-in" type="submit">Subir</button>
+                </div>
+            </form>
+        
+    </div>
+</div>
+<script>
+    function dropMenuCreation(type){
+        if (type == 'cerrar'){
+            $(".creation-container").css('display', 'none')
+        }
+        else{
+            $(".creation-container").css('display', '')
+        }
+    }
+
+</script>
+<!-- FINALIZA LA CREACION DE POSTEO ----------->
+
+
+<!----------------------- CREACION DE STORIES -->
+
+<div class="creation-container-story" style="display: none;">
+    <div class="drop-post-creation">
+            <form action="{% url 'createHistory' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+                <div>
+                    <label>Subir Historias <small style="font-size: 12px; color:rgb(157, 191, 255);">(Dura 1 dia)</small></label>
+                    {{formStory.history}}
+                </div>    
+                <div>
+                  <label for="room_description">Descripcion para Tu perfil</label>
+                  {{formStory.description}}
+                </div>
+                <div class="label-input">
+                {{formStory.permanent}}
+                <label  for="id_permanent">¿Deseas guardar la historia en tu perfil?</label>
+                </div>
+                <div class="form__action">
+                  <div class="unFollow-btn" onclick="dropMenuCreationStory('cerrar')">Cancelar</div>
+                  <button class="btn-log-in" type="submit">Subir</button>
+                </div>
+            </form>
+        
+    </div>
+</div>
+<script>
+    function dropMenuCreationStory(type){
+        if (type == 'cerrar'){
+            $(".creation-container-story").css('display', 'none')
+        }
+        else{
+            $(".creation-container-story").css('display', '')
+        }
+    }
+
+</script>
+<!-- FINALIZA LA CREACION DE STORIES ------------------------->

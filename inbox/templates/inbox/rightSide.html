@@ -1,0 +1,127 @@
+{% load static %}
+<div class="messenger-right-side">
+    {% if inbox %}
+<!--------------------------------- ACA INICIO DE INBOX ----------------------------------->
+    <div class="right-side-content" id="present-page">
+        <div class="circle">
+            <i class="bi bi-send logo-mini" style="font-size: 60px; color: rgb(94, 92, 90);"></i>
+        </div>
+        <div class="text">
+            <h3>Tus mensajes</h3>
+            <p>Envía fotos y mensajes privados a un amigo</p>
+        </div>
+        <button onclick="displayMenu(true)">Enviar mensaje</button>
+    </div>
+
+   
+    {% else %}
+<!--------------------------------- ACA LOS MENSAJES QUE SE ENVIAN ----------------------------------->
+    <div class="chat-inbox" id="new-page">
+        <div class="chat-inbox-top">
+            <div>
+                <img src="{{to_user.avatar.url}}">
+                <span><strong id="user-chat"> <a href="{% url 'profile' to_user.id %}">{{to_user}}</a></strong></span>
+            </div>
+            <div>
+                <i class="bi bi-telephone logo-mini"></i>
+                <i class="bi bi-camera-video logo-mini"></i>
+                <i class="bi bi-info-circle logo-mini"></i>
+                
+            </div>
+        </div>
+
+        <div class="chat-messanger">
+            <div class="messages-chat">
+                {% for message in messages %}
+                {% if profile == message.sender %}
+                <div class="send-message">
+                    <img src="{{profile.avatar.url}}">
+                    <!-- <img src="{% static 'images/meowed.png' %}"> -->
+
+                    {% if message.body %}
+                    <p>{{message.body}}</p>
+                    {% else %}
+                    <a href="{% url 'postUser' message.postsended.id %}">
+                        <div class="messenger-post">
+                            <div class="messenger-post-top">
+                                <img src="{{message.postsended.host.avatar.url}}" alt="gato-telefone">
+                                <p>{{message.postsended.host}}</p>
+                            </div>
+                            <img src="{{message.postsended.imagen.url}}" class="imagem" alt="gato-telefone">
+                            <div class="messenger-post-bottom">
+                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+
+
+
+                {% else %}
+
+                <div class="message-received">
+                    <img src="{{message.sender.avatar.url}}">
+                    {% if message.body %}
+                    <p style="display: none;">{{message.id}}</p>
+                    <p>{{message.body}}</p>
+                    {% else %}
+                    <a href="{% url 'postUser' message.postsended.id %}">
+                        <div class="messenger-post">
+                            <div class="messenger-post-top">
+                                <img src="{{message.postsended.host.avatar.url}}">
+                                <p>{{message.postsended.host}}</p>
+                            </div>
+                            <img src="{{message.postsended.imagen.url}}" class="imagem">
+                            <div class="messenger-post-bottom">
+                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <form id="send-message" onsubmit="sendMessage(event)" action="">
+                <div class="input-message">
+                    <input autocomplete="off" id="input_message" type="text" name="body" placeholder="Enviar mensaje">
+                </div>    
+            </form>
+        </div>
+    </div>
+    
+    <script>
+    var StartRefreshinMessages = setInterval(function(){     
+        refreshPage('{{to_user.id}}');        
+    }, 1000);
+    </script>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script>
+
+    
+    // ACTUALIZAR LOS MENSAJES EN VIVO POR MEDIO DE AJAX
+    function refreshPage(id){
+        $.ajax({
+            url : '/inbox/received-newMessage?id=' + id,
+        })
+        .done(function(result){
+            let x = $(".message-received").find("p").first().text()
+            if(x == result.id || !result.body) return;
+            message = 
+            `<div class="message-received">
+                    <img src="${result.imagen}">
+                    <p style="display: none;">${result.id}</p>
+                    <p>${result.body}</p>   
+            </div>
+            `
+            $(".messages-chat").prepend(message)
+            
+        })
+    }
+
+
+</script>

@@ -1,0 +1,63 @@
+{% load static %}
+<header class="desktop">
+    <div class="top-container">
+        <div class="top-logo">
+               <a href="{% url 'home' %}"><i class="bi bi-instagram logo-mini"></i></a>
+                <div class="spacer vertical"></div>
+                <img src="{% static 'images/logo.png' %}" alt="logotipo-instagram">
+        </div>
+
+        
+        <div class="top-icons">
+            <a href="{% url 'home' %}"><i class="bi bi-house-door logo-mini"></i></a>
+
+            <i class="bi bi-plus-square logo-mini logo-plus">
+                {% if request.path == '/' %}
+                <div class="sub-menu">
+                    <ul>
+                        <li onclick="dropMenuCreation()">Crea una publicacion</li>
+                        <hr>
+                        <li onclick="dropMenuCreationStory()">Crea una historia</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </i>
+            
+            <a href="{% url 'messages' %}"><i class="bi bi-inboxes logo-mini">
+                {% if notifications > 0 %}
+                <span class="inbox-notifications">{{notifications}}</span>
+                {% endif %}
+            </i></a>
+            
+            <a href="{% url 'notifications' request.user.id %}"><i class="bi bi-heart logo-mini">
+                {% if notifi > 0 %}
+                <span class="activity-notifications">{{notifi}}</span>
+                {% endif %}
+            </i></a>
+            <i class="bi bi-person logo-mini logo-login">
+                <div class="sub-menu">
+                    <ul>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'profile' request.user.id %}"><li>Perfil</li></a>
+                        <hr>
+                        <a href="{% url 'logout' %}"><li>Log out</li></a>
+                        {% else %}
+                        <a href="{% url 'register' %}"><li>Registrate</li></a>
+                        <hr>
+                        <a href="{% url 'login' %}"><li>Log In</li></a>
+                        {% endif %}
+                    </ul>
+                </div>
+            </i>
+        </div>
+    </div>
+</header>
+
+
+<div class="displayed-menu">
+    <a href="{% url 'home' %}"><i class="bi bi-house-door-fill logo-mini"></i></a>
+    <i class="bi bi-search logo-mini"></i>
+    <i class="bi bi-plus-circle-fill logo-mini"></i>
+    <i class="bi bi-heart-fill logo-mini "></i>
+    <i class="bi bi-person-fill logo-mini"></i>
+</div>

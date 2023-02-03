@@ -1,0 +1,119 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content%}
+{% include 'navbar.html' %}
+
+<!-- Container Start -->
+<div class="content-container">
+    <div class="messenger-body">
+
+        <!--//== LEFT SIDE ==// -->
+        <div class="messenger-left-side">
+            <div class="messenger-header">
+                <div class="messenger-profile-name">
+                    <a href="{% url 'profile' profile.id %}">
+                        <span><strong>{{request.user.username}}</strong></span>
+                       
+                    </a>
+                </div>
+                <div class="messenger-icon">
+                    <a href="#">
+                        <i class="bi bi-pencil-square logo-mini" onclick="displayMenu(true)"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="messenger-messages">
+                <div class="messages-users">
+
+                    {% for message in chat_message %}
+                    {% if message.received == profile and message.sender != to_user %}
+<!-- MENSAJES RECIBIDOS -->
+                    <a href="{% url 'messages-display' message.sender.id %}">    
+                        <div class="messenger-user-box">
+                            <img src="{{message.sender.avatar.url}}" alt="Profile Photo">
+                            <div class="user-message-info">
+                                <div>
+                                    <span class="name"><strong>{{message.sender}}</strong></span>
+                                    {% if message.read == False and message.sender != request.user %}
+                                    <p class="message">"<strong>{{message|truncatewords:3}}</strong>"</p>
+                                    {% else %}
+                                    <p class="message">"{{message}}"</p>
+                                    {% endif %}
+                                    <small style="color: rgb(165, 162, 162);">{{message.created|date}}</small>
+                                </div>
+                                
+                                {% if message.read == False and message.sender != request.user %}
+                                <div class="read-inbox">
+                                    <div></div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    {% elif message.sender == profile and message.received != to_user %}
+<!-- MENSAJES ENVIADOS  -->
+                    <a href="{% url 'messages-display' message.received.id %}">    
+                        <div class="messenger-user-box">
+                            <img src="{{profile.avatar.url}}" alt="Profile Photo">
+                            <div class="user-message-info">
+                                <div>
+                                    <span><strong class="name">{{message.received}}</strong></span>
+                                    {% if message.read == False %}
+                                    <p class="message"> <i class="bi bi-check-lg "></i> Mensaje enviado</p>
+                                    {% else %}
+                                    <p class="message"><i class="bi bi-check-all logo-mini"></i> Visto</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    
+                </div>
+
+            </div>
+        </div>
+
+        <!--//== RIGHT SIDE ==// -->
+        {% include 'inbox/rightSide.html' %}
+    </div>
+</div>
+
+
+<!--//== DISPLAY MENU ==//--> 
+<div class="drop-menu-messenger" style="display: none;">
+    <div class="background-displayed">
+        <div class="displayed-menu-chat">
+            <div class="top-displayed-menu">
+                <i class="bi bi-x-lg logo-mini" onclick="displayMenu(false)"></i>
+                <p><strong> Nuevo Mensaje </strong></p>
+                <p></p>
+            </div>
+            <p style="font-size: 12px;">*Solo muestra usuarios que sigas</p>
+            <div class="bottom-displayed-menu">
+                {% for x in profile.follow.all %}
+                <div class="users-displayed-menu">
+                        <div>
+                            <!-- <img src="{% static 'images/9gag.png'%}" alt=""> -->
+                            <p>{{x}}</p>
+                        </div>
+                        <a href="{% url 'messages-display' x.id %}"><button class='follow-btn'>enviar</button></a>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<script>
+    var to_user = '{{to_user.id}}'
+    // var urlMessageAjaxDisplay = "{% url 'message-ajax-display' %}"
+</script>
+
+
+
+{% endblock %}

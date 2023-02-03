@@ -1,0 +1,378 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content%}
+{% include 'navbar.html' %}
+{% include 'core/create-post.html' %}
+
+<div class="page-profile">
+    <div class="story-displayed"></div>
+
+    <!-- PROFILE -->
+    <div class="profile-wrap">
+        <div class="profile-avatar">
+            {% if profile.histories.all %}
+            <div class="circ-story circ-gradient"></div>
+            <img src="{{profile.avatar.url}}" onclick="storyDisplay('{{user.id}}')">
+            {% else %}
+            <img src="{{profile.avatar.url}}">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <div class="profile-title">
+                <h2>{{user.username}}</h2>
+                {% if request.user != profile.user%}
+
+                {% if request.user in profile.followers.all %}
+                <button onmouseover="changeBtn(true)" class="settings-btn-profile">Siguiendo</button>
+                <button onmouseout="changeBtn(false)" class="unFollow-btn" onclick="followOrUnfollow('unFollow', '{{user.id}}')" style="display: none;">Dejar de Seguir</button>
+                {% else %}
+                <button class="follow-btn" onclick="followOrUnfollow('Follow', '{{user.id}}')">Seguir</button>
+                {% endif %}
+                
+                {% else %}
+                <a href="{% url 'edit_profile' profile.id %}" class="settings-btn-profile">Editar</a>
+                {% endif %}
+
+            </div>
+            <!-- Profile Stats -->
+            <ul class="profile-numbers">
+                <li>
+                    <span class="profile-posts">{{posts.count}}</span>
+                    Posts
+                </li>
+                <li onclick="displayMenuOfFollowers(true)" style="cursor: pointer;">
+                    <span class="profile-followers">{{profile.followers.all.count}}</span>
+                    Seguidores
+                </li>
+                <li onclick="displayMenuOfFollow(true)" style="cursor: pointer;">  
+                    <span class="profile-following">{{profile.follow.all.count}}</span>
+                    Seguidos           
+                </li>
+            </ul>
+            <div class="profile-bio">
+                <h1 class="profile-name">{{profile.name}}</h1>
+                <span class="profile-description">
+                 {% if profile.bio %}
+                    {{profile.bio|truncatewords:"25"}}
+                 {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- STORIES -->
+    <div class="stories-wrap">
+        <ul class="stories-profile inner-wrap">
+            {% for x in stories|slice:"5" %}
+            {% if x.permanent == True %}
+            <li class="story-profile">
+                <div class="img-wrap">
+                    <div class="circ"></div>
+                    <img src="{{x.history.url}}">
+                </div>
+                <div class="story-title">
+                    {{x.description|slice:"9"}}
+                </div>
+            </li>
+            {% endif %}
+            {% endfor %}
+            <!-- <li class="story-profile">
+                <div class="img-wrap">
+                    <div class="circ"></div>
+                    <img src="{% static 'images/instapic-4.jpg'%}">
+                </div>
+                <div class="story-title">
+                    Chillin
+                </div>
+            </li>
+            <li class="story-profile">
+                <div class="img-wrap">
+                    <div class="circ"></div>
+                    <img src="{% static 'images/instapic-1.jpg'%}">
+                </div>
+                <div class="story-title">
+                    🍕
+                </div>
+            </li>
+            <li class="story-profile">
+                <div class="img-wrap">
+                    <div class="circ"></div>
+                    <img src="{% static 'images/instapic-2.jpg'%}">
+                </div>
+                <div class="story-title">
+                    M💰ney
+                </div>
+            </li> -->
+        </ul>
+    </div>
+
+
+    <!-- RESPONSIVE PROFILE NUMBERS -->
+    <ul class="profile-numbers responsive-profile">
+        <li>
+            <a href="#">
+                <span class="profile-posts">6</span>
+                posts
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="profile-followers">{{profile.followers.all.count}}</span>
+                followers
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <span class="profile-following">{{profile.follow.all.count}}</span>
+                following
+            </a>
+        </li>
+    </ul>
+
+
+
+    <!-- CONTENT -->
+    <div class="content-tabs inner-wrap">
+        <div class="tabs">
+            <div>
+                <span class="tab-content"  onclick="touch('post')">
+                    <i class="bi bi-grid-3x3 i-posts"></i>
+                    <span class="touch-post tab-text">Posts</span>
+                </span>
+            </div>
+        </div>
+        <div class="tabs">
+            <div>
+                <span class="tab-content"  onclick="touch('saved')">
+                    <i class="bi bi-bookmark saved"></i>
+                    <span class="touch-saved tab-text">Saved</span>
+                </span>
+            
+            </div>
+        </div>
+        <div class="tabs">
+            <div>
+                <div class="tab-content"  onclick="touch('tagged')">
+                    <i class="bi bi-tag i-tagged"></i>
+                    <span class="touch-tagged tab-text">Tagged</span>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- GALLERY -->
+    <div class="gallery-pics inner-wrap">
+        <div class="pic-wrap" id="post-profile">
+            {% for post in posts %}
+            <a href="{% url 'postUser' post.id %}">
+                <div class="pic">
+                    <div class="opacity-overlay">
+                        <img src="{{post.imagen.url}}">
+                    </div>
+                    <div class="icons">
+                        <i class="bi bi-heart-fill" style="color: white;">{{post.like}}</i>
+                        <i class="bi bi-chat-fill" style="color: white;">{{post.postcomments.count}}</i>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            
+        </div>
+
+        <div class="pic-wrap" id="save-profile" style="display: none;">
+            {% for x in savedPost %}
+            <a href="{% url 'postUser' x.post.id %}">
+                <div class="pic">
+                    <div class="opacity-overlay">
+                        <img src="{{x.post.imagen.url}}">
+                    </div>
+                    <div class="icons">
+                        <i class="bi bi-heart-fill" style="color: white;">{{x.post.like}}</i>
+                        <i class="bi bi-chat-fill" style="color: white;">{{x.post.postcomments.count}}</i>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="pic-wrap" id="tagged-profile" style="display: none;">
+            {% for x in posttagged %}
+            <a href="{% url 'postUser' x.id %}">
+                <div class="pic">
+                    <div class="opacity-overlay">
+                        <img src="{{x.post.imagen.url}}">
+                    </div>
+                    <div class="icons">
+                        <i class="bi bi-heart-fill" style="color: white;">{{x.like}}</i>
+                        <i class="bi bi-chat-fill" style="color: white;">{{x.postcomments.count}}</i>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+
+<!-- MENU DE SEGUIDORES -->
+<div id="followers-menu-displayed" class="background-displayed" style="display: none;">
+    <div class="displayed-menu-chat">
+        <div class="top-displayed-menu">
+            <i class="bi bi-x-lg logo-mini" onclick="displayMenuOfFollowers(false)"></i>
+            <p><strong>Seguidores</strong></p>
+            <p></p>
+        </div>
+        <div class="bottom-displayed-menu">
+            {% for x in profile.followers.all %}
+            <div class="users-displayed-menu">
+                <div>
+                    <!-- <img src="{% static 'images/9gag.png'%}" alt=""> -->
+                    <a href="{% url 'profile' x.id %}">{{x}}</a>
+                </div>
+
+                {% if x in me.follow.all %}
+                <button class="settings-btn-profile"><a href="{% url 'profile' x.id %}">Siguiendo</a></button>
+                {% elif x == request.user %}
+                <button class="settings-btn-profile"><a href="{% url 'profile' request.user.id %}">Mi Perfil</a></button>
+                {% else %}
+                <button class="follow-btn"><a href="{% url 'profile' x.id %}" style="color: white;">Follow</a></button>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- MENU DE SEGUIDOS -->
+<div id="follow-menu-displayed" class="background-displayed" style="display: none;">
+    <div class="displayed-menu-chat">
+        <div class="top-displayed-menu">
+            <i class="bi bi-x-lg logo-mini" onclick="displayMenuOfFollow(false)"></i>
+            <p><strong>Seguidos</strong></p>
+            <p></p>
+        </div>
+        <div class="bottom-displayed-menu">
+            {% for x in profile.follow.all %}
+            <div class="users-displayed-menu">
+                <div>
+                    <!-- <img src="{% static 'images/9gag.png'%}" alt=""> -->
+                    <a href="{% url 'profile' x.id %}">{{x.username}}</a>
+                </div>
+
+                    {% if x in me.follow.all %}
+                    <button class="settings-btn-profile">Siguiendo</button>
+                    {% elif x == request.user %}
+                    <button class="settings-btn-profile">Mi Perfil</button>
+                    {% else %}
+                    <button class="follow-btn"><a href="{% url 'profile' x.id %}" style="color: white;">Seguir</a></button>
+                    {% endif %}
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+    <!-- JAVASCRIPT DISPLAY SAVED POSTED OR POSTS -->
+    <script>
+        var followUrl = "{% url 'profile' profile.user.id %}"
+        let post = document.getElementById('post-profile')
+        let saved = document.getElementById('save-profile')
+        let tagged = document.getElementById('tagged-profile')
+        let lineSaved = document.getElementsByClassName('touch-saved')[0]
+        let linePost = document.getElementsByClassName("touch-post")[0]
+        let lineTagged = document.getElementsByClassName("touch-tagged")[0]
+        let iconSaved = document.getElementsByClassName('saved')[0]
+        let iconPost = document.getElementsByClassName('i-posts')[0]
+        let iconTagged = document.getElementsByClassName('i-tagged')[0]
+
+        // desplega la galeria de fotos de Post - Save - Tagged
+        function touch(action){
+                saved.style.display = "#8e8e8e";
+                linePost.style.color = '#8e8e8e'
+                lineTagged.style.color = '#8e8e8e'
+                lineSaved.style.color = "#8e8e8e"
+                iconSaved.style.color = "#8e8e8e"
+                iconTagged.style.color = "#8e8e8e"
+                iconPost.style.color = '#8e8e8e'
+
+            if(action == 'saved'){
+                post.style.display = "none";
+                tagged.style.display = "none"
+                saved.style.display = "";
+                iconSaved.style.color = "#000000"
+                lineSaved.style.color = "#000000"
+                linePost.classList.remove('touch-post')
+                lineTagged.classList.remove('touch-post')
+                lineSaved.classList.add('touch-post')
+
+            } else if (action == 'post'){
+                post.style.display = "";
+                saved.style.display = "none";
+                tagged.style.display = "none"
+                iconPost.style.color = "#000000"
+                linePost.style.color = "#000000"
+                linePost.classList.add('touch-post')
+                lineTagged.classList.remove('touch-post')
+                lineSaved.classList.remove('touch-post')
+            } else {
+                post.style.display = "none";
+                saved.style.display = "none";
+                tagged.style.display = ""
+                iconTagged.style.color = "#000000"
+                lineTagged.style.color = "#000000"
+                linePost.classList.remove('touch-post')
+                lineTagged.classList.add('touch-post')
+                lineSaved.classList.remove('touch-post')
+                
+            }
+        }
+
+        let settingBtn = document.getElementsByClassName('settings-btn-profile')[0]
+        let unFollowBtn = document.getElementsByClassName('unFollow-btn')[2]
+        function changeBtn(type){
+            if (type == true){
+                settingBtn.style.display = 'none'
+                unFollowBtn.style.display = ''    
+            }
+            else {
+                settingBtn.style.display = ''
+                unFollowBtn.style.display = 'none'
+            }
+        }
+
+
+        function displayMenuOfFollowers(display){
+            if(display == true){
+                $("#followers-menu-displayed").css('display', '')    
+            }
+            else{
+                $("#followers-menu-displayed").css('display', 'none')
+            } 
+         }
+        function displayMenuOfFollow(display){
+            if(display == true){
+            $("#follow-menu-displayed").css('display', '')    
+            }
+            else{
+            $("#follow-menu-displayed").css('display', 'none')
+            }
+        }
+    
+
+    </script>
+
+
+
+
+</div>
+
+{% endblock %}

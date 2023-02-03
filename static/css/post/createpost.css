@@ -1,0 +1,97 @@
+.drop-post-creation{
+    width: 500px;
+    border: 1px solid rgb(233, 231, 231);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 0 19.1px 10px;
+    background-color: white;
+    position: absolute;
+    top: 50px;
+    right: 430px;
+
+}
+.creation-container,
+.creation-container-story
+{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(143, 138, 138, 0.1);
+    z-index: 4;
+    top: 0;
+}
+
+input,
+textarea,
+select {
+  background: transparent;
+  border: 1px solid #e4e4e9;
+  padding: 1rem;
+  border-radius: 3px;
+  width: 100%;
+  color: #101010;
+  font-weight: 500;
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #a1a0a0;
+}
+.label-input{
+  margin: 20px 5px;
+}
+
+.label-input > label::after{
+  content: '';
+  text-align: center;
+  background-color: transparent;
+  min-height: 25px;
+  min-width: 25px;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 15px;
+  left: 335px;
+  position: absolute;
+  transition: 0.7s;
+}
+.label-input input{
+  display: none;
+}
+.label-input input:checked + label::after{
+  content: '✓';
+  text-align: center;
+  color: rgb(255, 255, 255);
+  border: none;
+  background-color: rgb(36, 255, 36);
+}
+textarea {
+  background: transparent;
+  height: 10rem;
+  resize: none;
+}
+
+select {
+color: #ccc8c8;
+font-weight: 400;
+padding: 10px;
+}
+
+select option {
+background-color: rgba(0, 149, 246, 0.2);
+padding: 3px;
+margin: 2px;
+color: #ffffff;
+text-align: center;
+}
+
+.form__action{
+    padding: 10px 0;
+    text-align: center;
+}
+.form__action > button{
+    background-color: rgb(8, 218, 18);
+    border: none;
+}
+.form__action > a {
+    display: block;
+}

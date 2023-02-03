@@ -1,0 +1,62 @@
+<aside>
+    <div class="sidebar">
+        <div class="profile">
+               
+                <img src="{{profile.avatar.url}}">
+                <div>
+                <a href="{% url 'profile' request.user.id %}"><h1>{{profile.email}}</h1></a>
+                <h2>{{profile.name}}</h2> 
+                </div>
+           
+        </div>
+        <div class="suggestions">
+                <p>Sugerencias para vos</p>
+            <ul>
+                {% for x in users|slice:"5" %}
+                {% if not x.user in profile.follow.all and x.user != request.user %}
+                <li>
+                    <img src="{{x.avatar.url}}">
+                    <div>
+                        <h1>{{x.name}}</h1>
+                        <h2 class="subtitle">Sugerencias para ti</h2>
+                    </div>
+                    <a href="{% url 'profile' x.id %}"><span>Seguir</span></a> 
+                </li>
+                {% endif %}
+                {% endfor %}
+                <!-- <li>
+                    <img src="static/images/chibirdart.png" alt="chibirdart">
+                    <div>
+                        <h1>chibirdart</h1>
+                        <h2 class="subtitle">Segue você</h2>
+                    </div>
+                    <span>Seguir</span>
+                </li>
+                <li>
+                    <img src="static/images/razoesparaacreditar.png" alt="razoesparaacreditar">
+                    <div>
+                        <h1>razoesparaacreditar</h1>
+                        <h2 class="subtitle">Novo no Instagram</h2>
+                    </div>
+                    <span>Seguir</span>
+                </li>
+                <li>
+                    <img src="static/images/adorableanimals.png" alt="adorableanimals">
+                    <div>
+                        <h1>adorable_animals</h1>
+                        <h2 class="subtitle">Segue você</h2>
+                    </div>
+                    <span>Seguir</span>
+                </li>
+                <li>
+                    <img src="static/images/smallcutecats.png" alt="smallcutecats">
+                    <div>
+                        <h1>smallcutecats</h1>
+                        <h2 class="subtitle">Segue você</h2>
+                    </div>
+                    <span>Seguir</span>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</aside>

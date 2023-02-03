@@ -1,0 +1,222 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content%}
+{% include 'navbar.html' %}
+{% include 'core/create-post.html' %}
+<main>
+    <div class="story-displayed"></div>
+    <div class="main-feed">
+        <div class="stories">
+            {% for x in users %}
+            <div class="story">
+                <div>
+                    {% if x.histories.all %}
+                    <div class="story-active"></div>
+                    <img src="{{x.avatar.url}}" onclick="storyDisplay('{{x.id}}')">
+                    {% else %}
+                    <img src="{{x.avatar.url}}">
+                    {% endif %}
+                </div>
+                <span><a href="{% url 'profile' x.id %}">{{x.user}}</a></span>
+            </div>
+            {% endfor %}
+            <!-- <div class="story">
+                <div>
+                    <div class="story-active"></div>
+                    <img src="static/images/meowed.png" alt="">
+                </div>
+                <span>meowed</span>
+            </div>
+            <div class="story">
+                <div>
+                    <div class="story-active"></div>
+                    <img src="static/images/barked.png" alt="">
+                </div>
+                <span>barked</span>
+            </div>
+            <div class="story">
+                <div>
+                    <div></div>
+                    <img src="static/images/nathanwpylestrangeplanet.png" alt="">
+                </div>
+                <span>nathanwpyle...</span>
+            </div>
+            <div class="story">
+                <div>
+                    <div></div>
+                    <img src="static/images/wawawiwacomicsa.png" alt="">
+                </div>
+                <span>wawawiwac...</span>
+            </div>
+             <div class="story">
+                <div>
+                    <div class="story-active"></div>
+                    <img src="static/images/respondeai.png" alt="">
+                </div>
+                <span>respondeai</span>
+            </div>
+            <div class="story">
+                <div>
+                    <div></div>
+                    <img src="static/images/filomoderna.png" alt="">
+                </div>
+                <span>filomoderna</span>
+            </div>
+            <div class="story">
+                <div>
+                    <div></div>
+                    <img src="static/images/memeriagourmet.png" alt="">
+                </div>
+                <span>memeriago...</span>
+            </div>  -->
+        </div>
+        <div class="posts">
+            {% for post in posts %}
+            <div class="post">
+                <div class="post-top">
+                    <div>
+                        <img src="{{post.host.avatar.url}}">
+                        <a href="{% url 'profile' post.host.user.id %}">{{post.host}}</a>
+                    </div>
+                    <div onmouseover="displayTagged('abrir')" style="gap:10px; max-width: 300px; display: grid; grid-template-columns: repeat(5, 1fr); display: none;">
+                        {% for x in post.tagged.all %}
+                        <span class="tagged"><a href="{% url 'profile' x.id %}">{{x}}</a></span>
+                        {% endfor %}
+                    </div>
+                    {% if post.host.user == request.user %}
+                    <i class="bi bi-three-dots logo-mini logo-points">
+                        <div class="sub-menu">
+                            <ul>
+                                <li>Eliminar Post</li>
+                            </ul>
+                        </div>
+                    </i>
+                    {% endif %}
+                    
+                </div>
+                <img src="{{post.imagen.url}}" class="imagen" onclick="displayTagged('abrir')" onmouseleave="displayTagged('cerrar')">
+                <div class="post-interactions">
+                    <div>
+                        {% if post in likepost %}
+                        <i class="bi bi-heart-fill logo-mini"  style="color: red;" onclick="likePost(this,'{{post.id}}', 'eliminar')"></i>
+                        {% else %}
+                        <i class="bi bi-heart logo-mini" onclick="likePost(this,'{{post.id}}', 'like')"></i>
+                        {% endif %}
+
+                        <a href="{% url 'postUser' post.id %}"><i class="bi bi-chat logo-mini chat"></i></a>
+                        <a href="{% url 'send-post' post.id %}"><i class="bi bi-send logo-mini"></i></a>
+                    </div>
+                    {% if post.tagged.all.count >= 1 %}
+                    <i class="bi bi-file-person-fill logo-mini" ></i>
+                    {% endif %}
+
+                    <div style="float: right;">
+                        {% if post in savedpost %}
+                            <i class="bi bi-bookmark-fill logo-mini" onclick="savePost(this,'{{post.id}}', 'eliminar')"></i>
+                        {% else %}
+                            <i class="bi bi-bookmark logo-mini" onclick="savePost(this,'{{post.id}}', 'guardar')"></i>
+                        {% endif %}
+                    </div>
+                        
+                </div>
+                <div class="likes">
+                    <span style="padding-left: 16px;">
+                        Le gusta a <strong>{{post.like}} personas</strong>
+                    </span>
+                </div>
+                <div class="post-description">
+                    <span><strong>{{post.host}}</strong> {{post.description}}</span>
+                </div>
+                <div class="comments">
+                    <a href="{% url 'postUser' post.id %}" class="comment-post">Ver los {{post.postcomments.count}} comentarios</a>
+                    
+                </div>
+                <h2>{{post.created|date:"M d, Y"}}</h2>
+                <div class="comment-input">
+                    <input type="text" id="newComment{{post.id}}" placeholder="Agregar un comentario...">
+                    <button onclick="postComment('{{post.id}}', 'redirect')">Publicar</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include 'core/aside.html' %}
+</main>
+
+
+
+<script>
+    function displayTagged(type){
+        let x = $(".tagged").parent()
+        if (type == 'abrir'){
+            x.css('display', '')
+        }
+        else{
+            x.css('display', 'none')
+        }
+    }
+
+    
+//     function storyDisplay(id){
+//         $.ajax({
+//         url : 'historyJson/' + id,
+//         type : 'GET'
+//     })
+//     .done(function(result){
+//         $(".story-displayed").empty()
+//         showStory = 
+//                 `
+//                 <div class="story-open-background">
+//                     <i class="bi bi-x-lg close-story" onclick="cerrar()"></i>
+//                     <div class="slideshow-container">
+//                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+//                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
+//                     </div>  
+//                 </div>
+//                 `
+//         $(".story-displayed").append(showStory)
+//             for(let x in result.historiesImg){
+//                 histories = 
+//                 `<div class="mySlides fade">
+//                     <div class="numbertext">
+//                     <img src="static/images/meowed.png" style="width: 25px;">
+//                     <p style="font-size: 17px; color:white;">${result.historiesUser[0]}</p>  
+//                     <small style="color:white;">20hs</small>
+//                     </div>
+//                     <img src="static${result.historiesImg[x]}" >
+//                     <div class="story-description-display">${result.historiesDes[x]}</div>
+//                 </div>
+//                 `
+//                 $(".slideshow-container").prepend(histories)
+//             } 
+//         slideIndex = 1
+//         showSlides(slideIndex);
+                      
+//     })
+//     }
+
+//     let slideIndex; 
+// function plusSlides(n) {
+//     showSlides(slideIndex += n);
+// }
+
+// function showSlides(n) {
+//   let i;
+//   let slides = document.getElementsByClassName("mySlides");
+//   if (n > slides.length) {slideIndex = 1}
+//   if (n < 1) {slideIndex = slides.length}
+
+//   for (i = 0; i < slides.length; i++) {
+//     slides[i].style.display = "none";
+//   }
+//   slides[slideIndex-1].style.display = "block";
+// }
+
+// function cerrar(){
+//     $('.story-open-background').css('display', 'none')
+// }
+    
+</script>
+
+{% endblock %}

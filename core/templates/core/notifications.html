@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% include 'navbar.html' %}
+<div class="notification-container">
+    {% for x in noti %}
+    {% if x.type == 1 %}
+    <div class="noti-div">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <img src="{% static 'images/meowed.png' %}" style="width: 35px;">
+            <h4>{{x.sender}}</h4>
+            <p style="font-size: 13px;">Te empezo a seguir </p>
+        </div>
+        <div>
+            {% if x.sender in profile.follow.all %}
+            <a href="{% url 'profile' x.sender.id %}"><button onmouseover="changeBtn(true)" class="settings-btn-profile" style="border: 1px solid black;">Siguiendo</button></a>
+            {% else %}
+            <a href="{% url 'profile' x.sender.id %}"><button class="follow-btn">Seguir</button></a>
+            {% endif %}
+
+        </div>
+    </div>
+    {% else  %}
+    <div class="noti-div">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <img src="{% static 'images/meowed.png' %}" style="width: 35px;">
+            <h4>{{x.sender}}</h4>
+            {% if x.type == 3%}
+            <p style="font-size: 13px;">Comento tu publicacion</p>
+            {% else %}
+            <p style="font-size: 13px;">Le dio like a tu publicacion</p>
+            {% endif %}
+        </div>
+        <div>
+            <img src="{% static 'images/gato-telefone.png' %}" class="noti-img" onclick="displayTagged('abrir')" onmouseleave="displayTagged('cerrar')">
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+{% endblock %}

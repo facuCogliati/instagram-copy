@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="drop-menu-messenger"> 
+    <div class="background-displayed">
+        <div class="displayed-menu-chat">
+            <div class="top-displayed-menu">
+                <a href="{% url 'home' %}"><i class="bi bi-x-lg logo-mini"></i></a>
+                <p><strong> Enviar  </strong></p>
+                <p></p>
+            </div>
+            <p style="font-size: 12px;">*Solo usuarios que sigas</p>
+            <div class="bottom-displayed-menu">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                {% for x in profile.follow.all %}
+                <div class="users-displayed-menu">
+                        <div>
+                            <!-- <img src="{% static 'images/9gag.png'%}" alt=""> -->
+                        </div>
+                        <input name="user" type="submit" class='follow-btn' value="{{x}}">
+                </div>
+                {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

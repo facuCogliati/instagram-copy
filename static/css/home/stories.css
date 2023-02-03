@@ -1,0 +1,190 @@
+/* CSS Stories */
+.stories {
+    width: 614px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 10px;
+    background-color: white;
+    border: 1px solid #DBDBDB;
+    box-sizing: border-box;
+    border-radius: 3px;
+    overflow: auto;
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.stories ion-icon {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 8px;
+    color: white;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    cursor: pointer;
+}
+
+.story {
+    width: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2px;
+}
+
+.story span {
+    width: 78px;
+    font-size: 12px;
+    line-height: 14px;
+    margin-top: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.story div {
+    width: 66px;
+    height: 66px;
+    /* background-image: url(/static/images/stories_background.png);
+    background-size: 66px 66px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.story-active{
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    width: 62px;
+    height: 62px;
+    transform: scale(1.12);
+    background-origin: border-box;
+    border: double 2.5px transparent;
+    background-clip: content-box, border-box;
+    background-image: 
+        linear-gradient(#fafafa, #fafafa), 
+        radial-gradient(farthest-corner at top right, #c42d90 50%,#f8964c 80%)
+    ;
+}
+
+.story img{
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    position: relative;
+}
+.story-open-background{
+    background-color: rgba(219, 216, 216, 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 4;
+}
+
+.close-story{
+    position: absolute;
+    top: 45px;
+    right: 500px;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    padding: 10px 10px 5px 10px;
+    cursor: pointer;
+    z-index: 6;
+}
+
+.slideshow-container {
+  position: absolute;
+  left: 500px;
+  top: 50px;
+}
+
+.mySlides {
+    display: none;
+    width: 350px;
+    height: 500px;
+}
+.mySlides > img{
+    border-radius: 10px;
+    height: 500px;
+    width: 350px;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+.story-description-display {
+  color: #ffffff;
+  background-color: transparent;
+  font-size: 19px;
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  right: 0;
+  text-align: center;
+  font-weight: 900;
+}
+
+.numbertext {
+  width:100% ;
+  background-color: rgba(124, 120, 120, 0.5);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.fade {
+  animation-name: fade;
+  animation-duration: 1s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@media (max-width: 614px) {
+    .stories {
+        height: 121px;
+        border: none;
+        background: #FAFAFA;
+        margin: 0;
+        padding: 0;
+    }
+    .stories i {
+        display: none;
+    }
+}

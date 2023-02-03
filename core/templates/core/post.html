@@ -1,0 +1,95 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="user-post">
+    <div class="post">
+        <div class="post-top">
+            <div>
+                <img src="{{post.host.avatar.url}}" alt="gato-telefone">
+                <a href="{% url 'profile' post.host.user.id %}">{{post.host}}</a>
+            </div>
+            <div onmouseover="displayTagged('abrir')" style="gap:10px; max-width: 300px; display: grid; grid-template-columns: repeat(5, 1fr); display: none;">
+                {% for x in post.tagged.all %}
+                <span class="tagged"><a href="{% url 'profile' x.id %}">{{x}}</a></span>
+                {% endfor %}
+            </div>
+            <i class="bi bi-three-dots logo-mini logo-points">
+                <div class="sub-menu">
+                    <ul>
+                        <li>Eliminar Post</li>
+                    </ul>
+                </div>
+            </i>
+            
+        </div>
+        <img src="{{post.imagen.url}}" class="imagen" onclick="displayTagged('abrir')" onmouseleave="displayTagged('cerrar')">
+        <div class="post-interactions">
+            <div>
+                
+                {% if liked %}
+                <i class="bi bi-heart-fill logo-mini"  style="color: red;" onclick="likePost(this,'{{post.id}}', 'eliminar')"></i>
+                {% else %}
+                <i class="bi bi-heart logo-mini" onclick="likePost(this,'{{post.id}}', 'like')"></i>
+                {% endif %}
+
+                <i class="bi bi-chat logo-mini chat"></i>
+                <a href="{% url 'send-post' post.id %}"><i class="bi bi-send logo-mini"></i></a>
+            </div>
+            {% if post.tagged.all.count >= 1 %}
+            <i class="bi bi-file-person-fill logo-mini" ></i>
+            {% endif %}
+
+            <div style="float: right;">
+                {% if saved %}
+                    <i class="bi bi-bookmark-fill logo-mini" onclick="savePost(this,'{{post.id}}', 'eliminar')"></i>
+                {% else %}
+                    <i class="bi bi-bookmark logo-mini" onclick="savePost(this,'{{post.id}}', 'guardar')"></i>
+                {% endif %}
+            </div>
+                
+        </div>
+        <div class="likes">
+            <span style="padding-left: 16px;">
+                Le gusta a <strong class="likes-jquery">{{post.like}} personas</strong>
+            </span>
+        </div>
+        <div class="post-description">
+            <span><strong>{{post.host}}</strong> {{post.description}}</span>
+        </div>
+        <div class="comments">
+            {% for x in comments %}
+            <div>
+                <div style="display: flex; gap: 10px;">
+                    <img src="{{x.user.avatar.url}}">
+                    <p><strong><a href="{% url 'profile' x.user.user.id %}">{{x.user}}</a></strong> {{x.name}}</p>    
+                </div>
+                <div style="cursor: pointer;">
+                    {% if x.user.user == request.user %}
+                    <p onclick="deleteComment(this, '{{x.id}}')">✖</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <h2> HACE 4 DIAS</h2>
+        <div class="comment-input">
+            <input id="newComment{{post.id}}" type="text" placeholder="Agregar Comentario...">
+            <button onclick="postComment('{{post.id}}')">Publicar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function displayTagged(type){
+        let x = $(".tagged").parent()
+        if (type == 'abrir'){
+            x.css('display', '')
+        }
+        else{
+            x.css('display', 'none')
+        }
+    }
+</script>
+{% endblock %}
