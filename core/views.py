@@ -52,7 +52,7 @@ def home(request):
         notifications = {}
         followers = []
         activity = 0
-        print('ALgo salio mal')
+
     return render(request, 'core/home.html', {
         'notifications' : notifications, 'posts' :Post.objects.all(),
         'savedpost' : postsaved, 'followers' : followers, 'form' : PostCreation(),
@@ -178,6 +178,8 @@ def postUser(request, pk):
 
 @csrf_exempt
 def createComment(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status' : 'mal'}, safe = False)
     profile = Profile.objects.get(user = request.user)
     id = request.POST.get('id')
     post = Post.objects.get(id = id)

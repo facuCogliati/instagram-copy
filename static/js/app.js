@@ -260,9 +260,10 @@ function postComment(id, type){
         }
     })
     .done(function(result){
-        if (type == 'redirect'){
-            return window.location.href = 'post/' + id
-        }
+        if(result.status == 'mal')return window.location.href = 'profile/ session-login';
+
+        if (type == 'redirect')return window.location.href = 'post/' + id;
+        
         message = 
         `
         <div>
