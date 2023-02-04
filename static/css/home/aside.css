@@ -20,12 +20,15 @@ top: 88px;
 display: flex;
 justify-content: space-between;
 align-items: center;
+width: 550px;
 }
 
 .sidebar .profile img {
 width: 56px;
 height: 56px;
+border-radius: 50%;
 margin:22px 17px 22px 0px;
+object-fit: cover;
 
 }
 

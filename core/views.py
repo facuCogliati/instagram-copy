@@ -54,7 +54,7 @@ def home(request):
         activity = 0
 
     return render(request, 'core/home.html', {
-        'notifications' : notifications, 'posts' :Post.objects.all(),
+        'notifications' : notifications, 'posts' :Post.objects.all().order_by('-created'),
         'savedpost' : postsaved, 'followers' : followers, 'form' : PostCreation(),
         'profile' : profile, 'histories' : histories,
         'users' : Profile.objects.all(), 'formStory' : HistoryCreation(), 

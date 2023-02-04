@@ -75,6 +75,7 @@
     height: 56px;
     border-radius: 50%;
     position: relative;
+    object-fit: cover;
 }
 .story-open-background{
     background-color: rgba(219, 216, 216, 0.5);

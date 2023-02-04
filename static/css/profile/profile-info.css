@@ -10,7 +10,8 @@
 
 /* === Profile Avatar === */
 .profile-avatar{
-    margin-right: 100px;    
+    margin-right: 100px;
+    width: 150px;  
 }
 
 .profile-avatar img{
@@ -18,6 +19,7 @@
     position: relative;
     width: 150px;
     height: 150px;
+    object-fit: cover;
     border: 1px solid #ccc;
 }
 
