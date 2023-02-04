@@ -40,6 +40,7 @@ class Histories(models.Model):
         return str(self.description)
         
 class Notifications(models.Model):
+    # 1 == follow , 2 == Like, 3 == comment
     type = models.IntegerField(default=1)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)

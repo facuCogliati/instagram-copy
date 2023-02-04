@@ -191,6 +191,13 @@ def createComment(request):
         postcomments = post,
         name = comment
     )
+    if profile.user != post.host.user:
+        Notifications.objects.create(
+            type = 2,
+            post = post,
+            sender = profile.user,
+            user = post.host.user
+        )
     return JsonResponse({
         'comment' : comment, 'host': request.user.username, 'pk': x.id,
         'avatar' : profile.avatar.url,
