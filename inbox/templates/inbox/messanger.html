@@ -57,7 +57,7 @@
 <!-- MENSAJES ENVIADOS  -->
                     <a href="{% url 'messages-display' message.received.id %}">    
                         <div class="messenger-user-box">
-                            <img src="{{profile.avatar.url}}" alt="Profile Photo">
+                            <img src="{{message.received.avatar.url}}" alt="Profile Photo">
                             <div class="user-message-info">
                                 <div>
                                     <span><strong class="name">{{message.received}}</strong></span>
