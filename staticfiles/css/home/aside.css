@@ -1,0 +1,114 @@
+/* CSS Barra Lateral */
+
+aside {
+width: 293px;
+margin-left: 28px;
+}
+
+.sidebar {
+width: 293px;
+height: 443px;
+left: auto;
+display: flex;
+flex-flow: column nowrap;
+justify-content: start;
+position: fixed;
+top: 88px;
+}
+
+.sidebar .profile {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 550px;
+}
+
+.sidebar .profile img {
+width: 56px;
+height: 56px;
+border-radius: 50%;
+margin:22px 17px 22px 0px;
+object-fit: cover;
+
+}
+
+.sidebar  h1 {
+font-weight: bold;
+font-size: 14px;
+line-height: 16px;
+cursor: pointer;
+}
+
+.sidebar h2 {
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+color: #8E8E8E;
+}
+
+.suggestions p {
+font-weight: 500;
+font-size: 12px;
+line-height: 14px;
+color: #8E8E8E;
+display: flex;
+justify-content: space-between;
+margin-bottom: 18px;
+}
+
+.suggestions p strong{
+color: #262626;
+cursor: pointer;
+}
+
+.suggestions li {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.suggestions li span {
+font-weight: 500;
+font-size: 12px;
+line-height: 14px;
+color: #139EF2;
+cursor: pointer;
+}
+
+.sidebar div div {
+display: flex;
+flex-direction: column;
+justify-content:space-between;
+align-items:flex-start;
+width: 100%;
+line-height: 18px;
+}
+
+.sidebar .subtitle {
+font-size: 12px;
+line-height: 22px;
+color: #8E8E8E;
+}
+
+.sidebar img {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+margin:8px 5px;
+}
+
+.sidebar .nav {
+margin-top: 15px;
+color: #C7C7C7;
+font-size: 11px;
+margin: 10px 0px;
+line-height: 13px;
+cursor: pointer;
+}
+
+/* CSS Páginas menores que 935px */
+@media (max-width: 935px) {
+    aside {
+     display: none;
+}
+}

@@ -1,0 +1,29 @@
+.notification-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+.notification-container > div{
+    width: 500px;
+    min-height: 70px;
+    max-height: 140px;
+    border-radius: 10px;
+    background-color: rgba(220, 220, 220, 0.7);
+}
+.noti-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    gap: 15px;
+}
+
+.noti-img{
+    width: 45px;
+    height: 40px;
+    margin-right: 10px;
+}

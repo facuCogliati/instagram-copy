@@ -1,0 +1,12 @@
+.edit-profile-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 425px;
+}
+
+.edit-profile-form{
+    height: 300px;
+    width: 500px;
+}
+
