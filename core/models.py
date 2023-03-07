@@ -5,7 +5,7 @@ from usuarios.models import Profile
 
 class Post(models.Model):
     host = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    imagen = models.ImageField(null=False)
+    imagen = models.ImageField()
     description = models.TextField(max_length=180, blank=True)
     like = models.PositiveIntegerField(default=0)
     tagged = models.ManyToManyField(User, blank=True, related_name='tagged')
