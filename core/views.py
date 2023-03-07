@@ -66,6 +66,8 @@ def home(request):
 
 @csrf_exempt
 def save_post(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'type' : 400}, safe=False)
     id = request.POST.get('id')
     type = request.POST.get('type')
     post = Post.objects.get(id = id)
@@ -82,6 +84,8 @@ def save_post(request):
 
 @csrf_exempt
 def like_post(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'type' : 400}, safe=False)
     id = request.POST.get('id')
     type = request.POST.get('type')
     post = Post.objects.get(id = id)
@@ -166,9 +170,13 @@ def historyJson(request):
 # Mostrar la publicacion de un usuario
 def postUser(request, pk):
     post = Post.objects.get(id = pk)
-    save_post = SavePost.objects.filter(user = request.user, post = post)
-    like_post = Likes.objects.filter(user = request.user, post = post)
     comments = Comment.objects.filter(postcomments = post)
+    try:
+        save_post = SavePost.objects.filter(user = request.user, post = post)
+        like_post = Likes.objects.filter(user = request.user, post = post)
+    except:
+        save_post = []
+        like_post = []
     return render(request, 'core/post.html', {
         'post': post, 'comments': comments,
         'saved' : save_post, 'liked' : like_post,

@@ -79,6 +79,8 @@ def ajaxDisplay(request):
 
 # Emviar publicaciones a los usuarios
 def send_post(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
     post = Post.objects.get(id = pk)
     profile = Profile.objects.get (user = request.user)
     if request.method == 'POST':

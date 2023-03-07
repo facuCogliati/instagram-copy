@@ -139,6 +139,7 @@ function savePost(el, id, type){
         }
     })
     .done(function(result){
+        if (result.type == 400) return window.location.href = '/profile/session-login';
         if (result.type == 'guardar'){
             let div = `<i class='bi bi-bookmark-fill logo-mini' onclick="savePost(this, ${result.id} , 'eliminar')"></i>`
             $(el).replaceWith(div)
@@ -162,6 +163,7 @@ function likePost(el, id, type){
         }
     })
     .done(function(result){
+        if (result.type == 400) return window.location.href = '/profile/session-login';
         if (result.type == 'like'){
             let div = `<i class="bi bi-heart-fill logo-mini"  style="color: red;" onclick="likePost(this,'${result.id}', 'eliminar')"></i>`
             $(el).replaceWith(div)
@@ -260,7 +262,7 @@ function postComment(id, type){
         }
     })
     .done(function(result){
-        if(result.status == 'mal')return window.location.href = 'profile/ session-login';
+        if(result.status == 'mal')return window.location.href = '/profile/session-login';
 
         if (type == 'redirect')return window.location.href = 'post/' + id;
         
@@ -277,7 +279,7 @@ function postComment(id, type){
         </div>
         `
         $(".comments").append(message);
-        $(".newComment").val('')
+        $("#newComment" + id).val('')
     })
 }
 

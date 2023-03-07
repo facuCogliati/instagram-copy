@@ -141,6 +141,10 @@
     overflow: auto;
 }
 
+/* .comments::-webkit-scrollbar {
+    display: none;
+  } */
+
 .comments strong {
     cursor: pointer;
 }

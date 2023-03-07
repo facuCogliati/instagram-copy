@@ -15,6 +15,7 @@
                 <span class="tagged"><a href="{% url 'profile' x.id %}">{{x}}</a></span>
                 {% endfor %}
             </div>
+            {% if post.host.user == request.user %}
             <i class="bi bi-three-dots logo-mini logo-points">
                 <div class="sub-menu">
                     <ul>
@@ -22,6 +23,7 @@
                     </ul>
                 </div>
             </i>
+            {% endif %}
             
         </div>
         <img src="{{post.imagen.url}}" class="imagen" onclick="displayTagged('abrir')" onmouseleave="displayTagged('cerrar')">
@@ -73,7 +75,7 @@
             </div>
             {% endfor %}
         </div>
-        <h2> HACE 4 DIAS</h2>
+        <h2> {{post.created|date:"M d, Y"}}</h2>
         <div class="comment-input">
             <input id="newComment{{post.id}}" type="text" placeholder="Agregar Comentario...">
             <button onclick="postComment('{{post.id}}')">Publicar</button>
