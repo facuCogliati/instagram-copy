@@ -49,7 +49,7 @@
                             </div>
                             <img src="{{message.postsended.imagen.url}}" class="imagem" alt="gato-telefone">
                             <div class="messenger-post-bottom">
-                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description}}</p>
+                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description|truncatewords:3}}</p>
                             </div>
                         </div>
                     </a>
@@ -74,7 +74,7 @@
                             </div>
                             <img src="{{message.postsended.imagen.url}}" class="imagem">
                             <div class="messenger-post-bottom">
-                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description}}</p>
+                                <p><strong>{{message.postsended.host}}</strong> {{message.postsended.description|truncatewords:3}}</p>
                             </div>
                         </div>
                     </a>

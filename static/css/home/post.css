@@ -10,7 +10,7 @@
 }
 
 .post {
-    min-width: 614px;
+    width: 614px;
     /* min-width: 614px; */
     background: #FFFFFF;
     border: 1px solid #DBDBDB;
@@ -59,7 +59,7 @@
 }
 
 .imagen{
-    object-fit: cover;
+    object-fit: contain;
     overflow: hidden; 
     cursor: pointer;
 }

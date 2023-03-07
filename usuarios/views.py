@@ -44,11 +44,11 @@ def session_register(request):
                 email = user.email
             )
             me = Profile.objects.get(id = 1)
-            Message.objects.create(
-                sender = me,
-                received = profile,
-                body = f'Bienvenido "{profile.name}", cualquier consulta no dudes en preguntar'
-            )
+            post = Post.objects.get(id = 1)
+            Message.objects.create( sender = me, received = profile, postsended = post )
+            
+            Message.objects.create( sender = me, received = profile, body = f'Bienvenido "{profile.name}", cualquier consulta no dudes en preguntar')
+            
             login(request, user)
             return redirect('home')
     return render (request, 'usuarios/session-login.html', {
@@ -107,5 +107,6 @@ def edit_profile(request, pk):
             form.save()
             return redirect('/profile/' + str(request.user.id))
         else:
+            print(request.FILES)
             return redirect('home')
     return render(request, 'usuarios/edit_profile.html', {'form' : form})
